@@ -51,10 +51,9 @@ export const userRouter = express.Router()
  *                    schema:
  *                        $ref: '#/components/schemas/UserSettings'
  */
-userRouter.get('/:userId/settings', (req: Request, res: Response) => {
-    const { userId } = req.query
-    const result: UserSettings = GetUserSettings.execute(userId)
-    console.log(result)
+userRouter.get('/:userId/settings', async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const result: UserSettings = await GetUserSettings.execute(userId)
     res.status(200).json(result)
 })
 
@@ -83,5 +82,5 @@ userRouter.get('/:userId/settings', (req: Request, res: Response) => {
  *                            $ref: '#/components/schemas/UserSettings'
  */
 userRouter.put('/:userId/settings', (req: Request, res: Response) => {
-
+    return res.status(404).json({ error: '' })
 })
