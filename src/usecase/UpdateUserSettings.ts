@@ -11,16 +11,10 @@ export const _makeUpdateUserSettings = (
   userSettingRepository: any
 ) => {
     return {
-      async execute(userId: UserSetting['id'], userSettings: UserSettings): Promise<UserSettings> {
+      execute(userId: UserSetting['id'], userSettings: UserSettings): Promise<void> {
         validation.parse(userSettings)
 
-        await userSettingRepository.updateUserSetting(userId, userSettings)
-
-        return Promise.resolve({
-            preferredTheme: PREFERRED_THEME.SYSTEM,
-            resultsPerPage: 20,
-            sendEmail: true
-        })
+        return userSettingRepository.updateUserSetting(userId, userSettings)
       }
     }
 }

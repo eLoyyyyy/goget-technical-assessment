@@ -15,7 +15,7 @@ export const _makeGetUserSettings = (
       async execute(userId: UserId): Promise<UserSettings> {
         const userSettings = await userSettingRepository.getUserSetting(userId)
 
-        if (userSettings.length <= 0) {
+        if (!userSettings) {
           throw new NoUserFound(userId)
         }
 

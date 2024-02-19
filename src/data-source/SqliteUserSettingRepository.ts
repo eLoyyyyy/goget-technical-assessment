@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { UserSetting, userSettings } from "../../db/schema";
+import { InsertUserSetting, UserSetting, userSettings } from "../../db/schema";
 import { db } from "../database";
 import { UserSettings } from "../types/UserSettings";
 
@@ -11,20 +11,34 @@ export class SqliteUserSettingRepository {
     this.table = userSettings
   }
 
-  getUserSetting(userId: UserSetting['userId']): UserSetting | undefined {
-    return this.db.select()
+  async getUserSetting(userId: UserSetting['userId']): Promise<UserSetting | null> {
+    if (!userId) {
+      return null
+    }
+
+    const result = await this.db.select()
       .from(this.table)
       .where(
         eq(this.table.userId, userId)
       )
-      .get()
+
+    return result.length <= 0
+        ? null
+        : result[0]
   }
 
-  updateUserSetting(userId: UserSetting['userId'], userSetting: UserSettings) {
-    return this.db.insert(this.table)
-      .values({
+  async updateUserSetting(userId: UserSetting['userId'], userSetting: any) {
+    if (!userId) {
+      return null
+    }
+
+    return this.db.update(this.table)
+      .set({
         preferredTheme: userSetting.preferredTheme,
         sendEmail: userSetting.sendEmail
       })
+      .where(
+        eq(this.table.userId, userId)
+      )
   }
 }

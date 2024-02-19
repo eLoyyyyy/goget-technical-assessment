@@ -5,11 +5,13 @@ import helmet from 'helmet'
 import { name, version, description, author } from '../package.json'
 import { pingRouter } from './routes/ping';
 import { userRouter } from './routes/users';
+import bodyParser from 'body-parser';
 
 const port = process.env.PORT || 3000;
 // Create a new express app instance
 const app: Express = express();
 
+app.use(bodyParser.json())
 app.use(helmet())
 
 const swaggerSpec = swaggerJSDoc({

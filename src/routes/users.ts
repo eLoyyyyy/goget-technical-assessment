@@ -1,6 +1,9 @@
 import express, { Request, Response } from "express";
 import { GetUserSettings } from "../usecase/GetUserSettings";
 import { UserSettings } from "../types/UserSettings";
+import { NoUserFound } from "../error/NoUserFound";
+import { UpdateUserSettings } from "../usecase/UpdateUserSettings";
+import { z } from "zod";
 
 export const userRouter = express.Router()
 /**
@@ -53,8 +56,20 @@ export const userRouter = express.Router()
  */
 userRouter.get('/:userId/settings', async (req: Request, res: Response) => {
     const userId = req.params.userId
-    const result: UserSettings = await GetUserSettings.execute(userId)
-    res.status(200).json(result)
+    try {
+
+      const result: UserSettings = await GetUserSettings.execute(userId)
+
+      return  res.status(200).json(result)
+    } catch (e) {
+      console.log(e)
+      if (e instanceof NoUserFound) {
+        return res.status(400).json('Error')
+      } else {
+        console.error(e)
+        return res.status(500).json('Error')
+      }
+    }
 })
 
 /**
@@ -81,6 +96,19 @@ userRouter.get('/:userId/settings', async (req: Request, res: Response) => {
  *                        schema:
  *                            $ref: '#/components/schemas/UserSettings'
  */
-userRouter.put('/:userId/settings', (req: Request, res: Response) => {
-    return res.status(404).json({ error: '' })
+userRouter.put('/:userId/settings', async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  try {
+    console.log({ userId, body: req.body})
+    await UpdateUserSettings.execute(Number(userId), req.body)
+
+    return res.status(201).send()
+  } catch (e) {
+    console.log(e)
+    if (e instanceof z.ZodError) {
+      return res.status(400).json(e.issues)
+    } else {
+      return res.status(500)
+    }
+  }
 })

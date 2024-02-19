@@ -13,7 +13,7 @@ import { PREFERRED_THEME } from "../src/types/PreferredTheme";
 
 export const userSettings = sqliteTable('user_settings', {
   id: integer('id').primaryKey(),
-  userId: text('user_id').unique().notNull(),
+  userId: text('user_id').unique(),
   preferredTheme: text('preferred_theme', { enum: [
     PREFERRED_THEME.DARK,
     PREFERRED_THEME.LIGHT,
