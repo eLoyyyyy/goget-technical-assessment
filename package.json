@@ -8,7 +8,6 @@
     "run-api": "npm run build && npm start --env=.env",
     "build": "tsc",
     "dev": "nodemon src/index.ts",
-    "swagger": "node src/swagger.ts",
     "e2e:debug": "npx playwright test --debug",
     "e2e": "npx playwright test"
   },
