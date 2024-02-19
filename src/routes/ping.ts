@@ -13,6 +13,8 @@ export const pingRouter = express.Router()
  *         description: Returns a timestamp object.
  *         content:
  *              application/json:
+ *                  example:
+ *                    timestamp: 1708329618986
  *                  schema:
  *                      timestampObject:
  *                          type: object

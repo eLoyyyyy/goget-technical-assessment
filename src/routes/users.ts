@@ -62,7 +62,7 @@ userRouter.get('/:userId/settings', async (req: Request, res: Response) => {
 
       return  res.status(200).json(result)
     } catch (e) {
-      console.log(e)
+      console.error(e)
       if (e instanceof NoUserFound) {
         return res.status(400).json('Error')
       } else {
@@ -99,12 +99,11 @@ userRouter.get('/:userId/settings', async (req: Request, res: Response) => {
 userRouter.put('/:userId/settings', async (req: Request, res: Response) => {
   const userId = req.params.userId
   try {
-    console.log({ userId, body: req.body})
     await UpdateUserSettings.execute(Number(userId), req.body)
 
     return res.status(201).send()
   } catch (e) {
-    console.log(e)
+    console.error(e)
     if (e instanceof z.ZodError) {
       return res.status(400).json(e.issues)
     } else {

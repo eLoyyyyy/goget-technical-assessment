@@ -30,10 +30,9 @@ const swaggerSpec = swaggerJSDoc({
   },
   apis: ['./build/**/*.js']
 });
-console.log(JSON.stringify(swaggerSpec))
 app.use(pingRouter)
 app.use('/user', userRouter)
-app.use('/api-docs/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port, () => {
   console.log(`App is listening on port ${port}!`);
