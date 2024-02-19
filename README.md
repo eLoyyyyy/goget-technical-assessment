@@ -27,8 +27,24 @@ The user settings can be the following
 
 ## Initialize
 
+### Install dependencies
+```
+npm ci
+```
+
 #### Sqlite
 
 ```
 npx ts-node initialize.ts
+```
+
+### Run E2E tests
+```
+npx playwright test
+```
+
+
+### Start application
+```
+npm run build && npm start
 ```
