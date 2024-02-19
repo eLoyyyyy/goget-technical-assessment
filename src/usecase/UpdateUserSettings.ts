@@ -3,13 +3,18 @@ import { PREFERRED_THEME } from "../types/PreferredTheme"
 import { UserSettings } from "../types/UserSettings"
 import { UserId, UserIdSchema } from "../validation/UserId"
 import { UserSettingsSchema } from "../validation/UserSettings"
+import { UserSetting } from "../../db/schema"
+import { SqliteUserSettingRepository } from "../data-source/SqliteUserSettingRepository"
 
-export const _makeUpdateUserSettings = (validation: any) => {
+export const _makeUpdateUserSettings = (
+  validation: any,
+  userSettingRepository: any
+) => {
     return {
-      execute(userSettings: UserSettings): Promise<UserSettings> {
+      async execute(userId: UserSetting['id'], userSettings: UserSettings): Promise<UserSettings> {
         validation.parse(userSettings)
 
-        // TODO: save to database
+        await userSettingRepository.updateUserSetting(userId, userSettings)
 
         return Promise.resolve({
             preferredTheme: PREFERRED_THEME.SYSTEM,
@@ -21,5 +26,6 @@ export const _makeUpdateUserSettings = (validation: any) => {
 }
 
 export const UpdateUserSettings = _makeUpdateUserSettings(
-    UserSettingsSchema
+    UserSettingsSchema,
+    new SqliteUserSettingRepository()
 )

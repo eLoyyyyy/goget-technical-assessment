@@ -24,3 +24,11 @@ The user settings can be the following
 * preferredTheme: Enum . “light”, “dark”, “system” (default: “system”)
 * resultsPerPage: Int. min 20, max 100 (default 20)
 * sendEmail: bool. (default true)
+
+## Initialize
+
+#### Sqlite
+
+```
+npx ts-node initialize.ts
+```
